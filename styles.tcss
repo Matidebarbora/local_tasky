@@ -1,0 +1,102 @@
+Screen { background: transparent; }
+
+#top-bar {
+    height: 3;
+    margin-bottom: 0;
+    background: transparent;
+}
+#top-bar Static {
+    background: transparent;
+}
+
+#app-title {
+    background: #0a0f2e;
+    width: 100%;
+    height: 100%;
+    border: round #00ff00;
+    content-align: center middle;
+    text-style: bold;
+}
+
+DataTable {
+    background: transparent;
+    border: round #00ff00;
+    height: 1fr;
+}
+
+DataTable > .datatable--cursor,
+DataTable:focus > .datatable--cursor {
+    background: #303030;
+    color: $text;
+    text-style: none;
+}
+
+Header,
+HeaderTitle,
+HeaderIcon,
+HeaderClock {
+    background: transparent;
+}
+
+ConfirmScreen,
+TaskFormScreen,
+ViewFilterScreen,
+ProjectManagerScreen,
+PreferencesScreen,
+LogFormScreen,
+LogDetailScreen,
+HelpScreen,
+UpdateGuideScreen {
+    align: center middle;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+#dialog, #help-dialog {
+    padding: 1 2;
+    background: transparent;
+    border: heavy #00ff00;
+}
+
+LogFormScreen #dialog {
+    width: 100;
+    height: auto;
+}
+
+LogDetailScreen #dialog {
+    width: 80;
+    height: 30;
+}
+
+UpdateGuideScreen #dialog {
+    width: 80;
+    height: 40;
+}
+
+TaskFormScreen #dialog,
+PreferencesScreen #dialog,
+ViewFilterScreen #dialog,
+ConfirmScreen #dialog {
+    width: 70;
+    height: auto;
+}
+
+#help-dialog {
+    width: 50;
+    height: auto;
+}
+
+#dialog-title {
+    content-align: center middle;
+    width: 100%;
+    margin-bottom: 1;
+}
+
+#dialog-buttons {
+    margin-top: 1;
+    align: center middle;
+    height: auto;
+}
+
+#dialog-buttons Button {
+    margin: 0 1;
+}
