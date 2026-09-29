@@ -98,7 +98,6 @@ class TaskManagerApp(App):
         if "bg_color" in vs:
             self.app_bg = vs["bg_color"]
 
-        self._update_header()
         self.populate_table()
         self.query_one(DataTable).focus()
 
@@ -164,17 +163,6 @@ class TaskManagerApp(App):
         if hasattr(self, "data") and "view_settings" in self.data:
             self.data["view_settings"]["theme"] = new_theme
             db_save_view_settings(self.data["view_settings"])
-
-    # ------------------------------------------------------------------
-    # Header
-    # ------------------------------------------------------------------
-
-    def _update_header(self) -> None:
-        label = f"TASKY LOCAL v{APP_VERSION}"
-        try:
-            self.query_one("#app-title", Static).update(label)
-        except Exception:
-            pass
 
     # ------------------------------------------------------------------
     # Table rendering
@@ -337,6 +325,9 @@ class TaskManagerApp(App):
             if not db_edit_project(name, new_name, new_color):
                 self.notify("NEW DESIGNATION ALREADY EXISTS.", severity="error")
                 return
+            if new_name and new_name != name and self.data["view_settings"].get("filter_project") == name:
+                self.data["view_settings"]["filter_project"] = new_name
+                db_save_view_settings(self.data["view_settings"])
             self.notify(f"PROJECT '{name}' OVERRIDDEN.", severity="information")
 
         elif result["action"] == "delete":
@@ -351,6 +342,9 @@ class TaskManagerApp(App):
     def finalize_project_purge(self, confirm: bool | None, name: str) -> None:
         if confirm:
             db_delete_project(name)
+            if self.data["view_settings"].get("filter_project") == name:
+                self.data["view_settings"]["filter_project"] = None
+                db_save_view_settings(self.data["view_settings"])
             self.notify(f"PROJECT '{name}' PURGED.", severity="warning")
             self.populate_table()
 

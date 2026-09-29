@@ -15,10 +15,6 @@ DEFAULT_VIEW_SETTINGS = {
 }
 
 
-def config_exists() -> bool:
-    return CONFIG_FILE.exists()
-
-
 def load_config() -> dict:
     if not CONFIG_FILE.exists():
         return {"view_settings": DEFAULT_VIEW_SETTINGS.copy()}
@@ -33,14 +29,6 @@ def save_config(data: dict) -> None:
     CONFIG_DIR.mkdir(parents=True, exist_ok=True)
     with open(CONFIG_FILE, "w") as f:
         json.dump(data, f, indent=2)
-
-
-def update_config(patch: dict) -> dict:
-    """Load-modify-save merge: updates only the given top-level keys."""
-    data = load_config()
-    data.update(patch)
-    save_config(data)
-    return data
 
 
 def save_view_settings(vs: dict) -> None:

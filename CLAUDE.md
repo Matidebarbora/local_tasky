@@ -22,6 +22,8 @@ pip install -r requirements.txt
 
 Only dependency: `textual==7.4.0`. No `supabase` package, no network access anywhere in the app.
 
+Requires Python 3.10 or newer (the codebase uses `X | None` type annotations that need 3.10+).
+
 ## File structure
 
 ```

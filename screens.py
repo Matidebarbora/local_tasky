@@ -1,7 +1,7 @@
 import random
 from datetime import datetime
 
-from textual import on, work
+from textual import on
 from textual.binding import Binding
 from textual.containers import Center, Horizontal, Middle, Vertical, VerticalScroll
 from textual.screen import ModalScreen, Screen
@@ -127,6 +127,9 @@ class ConfirmScreen(ModalScreen[bool]):
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         self.dismiss(event.button.id == "btn-yes")
+
+    def action_cancel(self) -> None:
+        self.dismiss(None)
 
     def on_mount(self) -> None:
         _apply_dialog_style(self)
@@ -525,6 +528,9 @@ class TaskFormScreen(ModalScreen[dict]):
         elif event.button.id == "btn-cancel":
             self.dismiss(None)
 
+    def action_cancel(self) -> None:
+        self.dismiss(None)
+
     def on_mount(self) -> None:
         _apply_dialog_style(self)
 
@@ -548,6 +554,12 @@ class ViewFilterScreen(ModalScreen[dict]):
             ("4. ----", "4. ----"),
         ]
 
+        filter_proj_value = self.settings.get("filter_project") or "NONE"
+        if filter_proj_value not in [value for _, value in proj_opts]:
+            # Stale value (project renamed/deleted since this was saved) —
+            # fall back to the "no filter" sentinel instead of crashing.
+            filter_proj_value = "NONE"
+
         with Vertical(id="dialog"):
             yield Label("[bold cyan]VIEW & FILTER CONFIGURATION[/bold cyan]", id="dialog-title")
             yield Label("Sort By:")
@@ -556,7 +568,7 @@ class ViewFilterScreen(ModalScreen[dict]):
             yield Select(
                 proj_opts,
                 id="filter-proj",
-                value=self.settings.get("filter_project") or "NONE",
+                value=filter_proj_value,
             )
             yield Label("Priority Filter:")
             yield Select(
@@ -587,6 +599,9 @@ class ViewFilterScreen(ModalScreen[dict]):
             })
         elif event.button.id == "btn-cancel":
             self.dismiss(None)
+
+    def action_cancel(self) -> None:
+        self.dismiss(None)
 
     def on_mount(self) -> None:
         _apply_dialog_style(self)
@@ -665,6 +680,9 @@ class ProjectManagerScreen(ModalScreen[dict]):
         elif event.button.id == "btn-cancel":
             self.dismiss(None)
 
+    def action_cancel(self) -> None:
+        self.dismiss(None)
+
     def on_mount(self) -> None:
         _apply_dialog_style(self)
 
@@ -731,6 +749,9 @@ class PreferencesScreen(ModalScreen[dict]):
             })
         elif event.button.id == "btn-cancel":
             self.dismiss(None)
+
+    def action_cancel(self) -> None:
+        self.dismiss(None)
 
     def on_mount(self) -> None:
         _apply_dialog_style(self)
@@ -828,6 +849,9 @@ class LogFormScreen(ModalScreen[dict]):
             self.dismiss({"action": "delete", "id": self.log_data.get("id")})
         elif event.button.id == "btn-cancel":
             self.dismiss(None)
+
+    def action_cancel(self) -> None:
+        self.dismiss(None)
 
     def on_mount(self) -> None:
         _apply_dialog_style(self)
@@ -934,10 +958,10 @@ class ProjectLogScreen(Screen):
             elif action == "delete" and log_id:
                 db_delete_project_log(log_id)
                 self.expanded_logs.discard(f"log::{log_id}")
+                self.app.notify("Log entry deleted.", severity="warning")
         except Exception as e:
             self.app.notify(f"ERROR: {e}", severity="error")
             return
-            self.app.notify("Log entry deleted.", severity="warning")
 
         self.populate_table()
 
