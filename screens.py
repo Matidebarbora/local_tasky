@@ -148,17 +148,14 @@ class HelpScreen(ModalScreen[None]):
             ("ctrl+l", "Project Log"),
             ("Enter",  "Expand / Collapse"),
         ]),
-        ("USUARIOS / VISTA", [
-            ("ctrl+g", "Users"),
-            ("ctrl+m", "My Tasks toggle"),
-            ("ctrl+b", "View User"),
-            ("ctrl+a", "Hide Assigned col"),
+        ("VISTA", [
             ("ctrl+f", "Filters"),
             ("ctrl+k", "Hide Done"),
             ("ctrl+w", "Focus Mode"),
+            ("ctrl+down", "Expand All"),
+            ("ctrl+up", "Collapse All"),
         ]),
         ("SISTEMA", [
-            ("ctrl+r", "Sync now"),
             ("ctrl+p", "Preferences"),
             ("ctrl+u", "Manual"),
             ("?",      "Shortcuts"),
