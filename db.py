@@ -119,9 +119,9 @@ def db_get_log_by_id(log_id: int) -> dict | None:
     return local_get_log_by_id(log_id)
 
 
-def db_add_project_log(project: str, log_date: str, title: str, notes: str) -> None:
+def db_add_project_log(project: str, log_date: str, title: str, notes: str) -> int:
     from local_db import local_add_project_log
-    local_add_project_log(project, log_date, title, notes)
+    return local_add_project_log(project, log_date, title, notes)
 
 
 def db_update_project_log(log_id: int, log_date: str, title: str, notes: str) -> None:
